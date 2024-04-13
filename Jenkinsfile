@@ -12,9 +12,6 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            when {
-                branch 'master'
-            }
             steps {
                 script {
                     docker.build(DOCKER_IMAGE_NAME)
@@ -22,9 +19,6 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
-            when {
-                branch 'master'
-            }
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker_hub_login') {
@@ -35,9 +29,6 @@ pipeline {
             }
         }
         stage('Canary Deploy') {
-            when {
-                branch 'master'
-            }
             environment { 
                 CANARY_REPLICAS = 1
             }
@@ -50,9 +41,6 @@ pipeline {
             }
         }
         stage('Deploy to Production') {
-            when {
-                branch 'master'
-            }
             environment { 
                 CANARY_REPLICAS = 0
             }
