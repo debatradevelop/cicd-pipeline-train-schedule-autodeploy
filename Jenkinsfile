@@ -34,7 +34,7 @@ pipeline {
             }
             steps {
                 kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
+                    kubeConfigId: 'kubeconfig',
                     configs: 'train-schedule-kube-canary.yml',
                     enableConfigSubstitution: true
                 )
@@ -48,7 +48,7 @@ pipeline {
                 input 'Deploy to Production?'
                 milestone(1)
                 kubernetesDeploy(
-                    kubeconfig: '/home/edureka/.kube/admin.conf',
+                    kubeConfig: '/home/edureka/.kube/admin.conf',
                     configs: 'train-schedule-kube.yml',
                     enableConfigSubstitution: true
                 )
