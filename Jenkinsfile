@@ -17,7 +17,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build(DOCKER_IMAGE_NAME)
+                    docker.build(env.DOCKER_IMAGE_NAME)
                 }
             }
         }
@@ -42,11 +42,13 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
+                script {
+                    kubernetesDeploy(
+                        kubeconfigId: 'kubeconfig',
+                        configs: 'train-schedule-kube-canary.yml',
+                        enableConfigSubstitution: true
+                    )
+                }
             }
         }
         stage('Deploy to Production') {
@@ -59,11 +61,13 @@ pipeline {
             steps {
                 input 'Deploy to Production?'
                 milestone(1)
-                kubernetesDeploy(
-                    kubeConfig: '/home/edureka/.kube/admin.conf',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
+                script {
+                    kubernetesDeploy(
+                        kubeConfig: 'kubeconfig',
+                        configs: 'train-schedule-kube.yml',
+                        enableConfigSubstitution: true
+                    )
+                }
             }
         }
     }
