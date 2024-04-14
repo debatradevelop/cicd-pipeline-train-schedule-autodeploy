@@ -60,7 +60,7 @@ pipeline {
                 input 'Deploy to Production?'
                 milestone(1)
                 kubernetesDeploy(
-                    kubeconfig: '/home/edureka/.kube/admin.conf',
+                    kubeConfig: '/home/edureka/.kube/admin.conf',
                     configs: 'train-schedule-kube.yml',
                     enableConfigSubstitution: true
                 )
