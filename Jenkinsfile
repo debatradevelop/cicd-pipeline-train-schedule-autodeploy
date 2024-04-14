@@ -14,7 +14,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build(DOCKER_IMAGE_NAME)
+                    docker.build(env.DOCKER_IMAGE_NAME)
                 }
             }
         }
@@ -22,8 +22,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker_hub_login') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
+                        docker.image(env.DOCKER_IMAGE_NAME).push("${env.BUILD_NUMBER}")
+                        docker.image(env.DOCKER_IMAGE_NAME).push("latest")
                     }
                 }
             }
