@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE_NAME = "debatradevelop/train-schedule"
-        KUBE_CONFIG_FILE = "/home/edureka/.kube/admin.conf"
-        KUBE_CONFIG_ID = "kubeconfig"
+        KUBE_CONFIG = '/home/edureka/.kube/admin.conf'
+        KUBE_CONFIG_ID = 'kubeconfig'
     }
     stages {
         stage('Build') {
@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 kubernetesDeploy(
-                    kubeConfigId: "${env.KUBE_CONFIG_ID}",
+                    kubeconfigId: env.KUBE_CONFIG_ID,
                     configs: 'train-schedule-kube-canary.yml',
                     enableConfigSubstitution: true
                 )
@@ -50,7 +50,7 @@ pipeline {
                 input 'Deploy to Production?'
                 milestone(1)
                 kubernetesDeploy(
-                    kubeConfig: "${env.KUBE_CONFIG_FILE}",
+                    kubeconfigId: env.KUBE_CONFIG_ID,
                     configs: 'train-schedule-kube.yml',
                     enableConfigSubstitution: true
                 )
